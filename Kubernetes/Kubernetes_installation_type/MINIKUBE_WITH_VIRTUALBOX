@@ -1,0 +1,68 @@
+#Here's a step-by-step guide to installing Minikube on Ubuntu:
+#Step 1: Install Required Packages
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+
+#Step 2: Install VirtualBox (Hypervisor)
+sudo apt-get install virtualbox virtualbox-ext-pack
+
+#Step 3: Install kubectl
+sudo snap install kubectl --classic
+
+#Step 4: Install Minikube
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  && chmod +x minikube \
+  && sudo mv minikube /usr/local/bin/
+
+#Step 5: Start Minikube
+minikube start --driver=virtualbox
+
+#Step 6: Verify Installation
+kubectl cluster-info
+
+#Step 7: Interact with Minikube
+kubectl get nodes
+
+#Step 8: Start Minikube (use first cmd if that not work then only we have to use other two)
+minikube start
+minikube start --force
+minikube start --no-vtx-check
+
+#step 9: Now create a minifest 
+vi nginx-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+#step 10: Now execute the manifest
+kubectl apply -f nginx-deployment.yaml
+
+#step 11: Deploy the application once it run
+kubectl get deployments
+
+#step 12: 
+kubectl expose deployment nginx-deployment --type=NodePort --port=80
+
+#step 13: 
+minikube service nginx-deployment --url
+
+
+
+
+

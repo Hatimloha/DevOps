@@ -1,0 +1,20 @@
+apiVersion: app/v1
+kind: deployment
+metadata:
+  name: go-web-app
+  laels:
+    app: go-web-app
+  spec:
+    replicas: 1
+    selector:
+      app: go-web-app
+    template:
+      metadata:
+        lables:
+          app: go-web-app
+      spec:
+        containers:
+        - name: go-web-app
+          image: hatimloha/go-web-app
+          ports:
+          - containerPort: 8080

@@ -1,0 +1,37 @@
+#1 To install the latest minikube stable release on x86-64 Linux using binary download:
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+
+#install docker 
+apt-get install docker.io
+service docker start
+
+#install kubectl
+sudo apt update
+sudo apt install curl -y
+curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
+
+#2 Start your cluster
+minikube start
+minikube start --force (use only when getting error)
+
+#3 Interact with your cluster
+kubectl get po -A
+minikube kubectl -- get po -A
+minikube dashboard
+
+#4 Deploy applications (Check Repo):
+1. Service 
+2. Loadbalancer
+3. ingress
+
+#5 Manage your cluster
+minikube pause
+minikube unpause
+minikube stop
+minikube config set memory 9001
+minikube addons list
+minikube start -p aged --kubernetes-version=v1.16.1
+minikube delete --all

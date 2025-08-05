@@ -1,0 +1,29 @@
+#Install the Chef Server: 
+sudo apt update && sudo apt upgrade
+wget https://packages.chef.io/files/stable/chef-server/15.1.7/ubuntu/20.04/chef-server-core_15.1.7-1_amd64.deb
+sudo dpkg -i chef-server-core_*.deb
+rm chef-server-core_*.deb 
+sudo chef-server-ctl reconfigure
+
+#Configure a Chef User and Organization
+mkdir .chef
+sudo chef-server-ctl user-create USER_NAME FIRST_NAME LAST_NAME EMAIL 'PASSWORD' --filename ~/.chef/USER_NAME.pem
+sudo chef-server-ctl user-list <USER_NAME>
+sudo chef-server-ctl org-create ORG_NAME "ORG_FULL_NAME" --association_user USER_NAME --filename ~/.chef/ORG_NAME.pem
+sudo chef-server-ctl org-list <ORG_NAME>
+
+#Install and Configure a Chef Workstation
+wget https://packages.chef.io/files/stable/chef-workstation/22.10.1013/ubuntu/20.04/chef-workstation_22.10.1013-1_amd64.deb
+sudo dpkg -i chef-workstation_*.deb
+rm chef-workstation_*.deb 
+chef -v
+
+#Configure a Chef Workstation
+chef generate repo chef-repo
+vi /etc/hosts
+  127.0.0.1 localhost
+  192.0.1.0 example.com
+  192.0.2.0 chefworkstation
+mkdir ~/chef-repo/.chef
+cd chef-repo
+
